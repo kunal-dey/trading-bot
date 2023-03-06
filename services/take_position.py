@@ -8,7 +8,7 @@ def short(symbol:str, quantity:int, product_type:ProductType):
         2. sell a negative quantity of stocks
     """
     try:
-        response_data = kite_context.place_order(
+        kite_context.place_order(
             variety=kite_context.VARIETY_REGULAR,
             order_type=kite_context.ORDER_TYPE_MARKET,
             exchange=kite_context.EXCHANGE_NSE,
