@@ -4,6 +4,7 @@ from quart_cors import cors
 from services.background_task import background_task
 
 from routes.login import login
+from routes.stocks_input import stocks_input
 
 app = Quart(__name__)
 app.config["PROPAGATE_EXCEPTIONS"] = True
@@ -31,7 +32,7 @@ async def stop_background_tasks():
         task.cancel()
     return {"message":"All task cancelled"}
 
-resource_list:Blueprint=[login]
+resource_list:Blueprint=[login, stocks_input]
 
 for resource in resource_list:
     app.register_blueprint(blueprint=resource)
