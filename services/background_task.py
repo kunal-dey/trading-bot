@@ -58,22 +58,7 @@ async def background_task():
                     if stock_name in list(stocks_to_buy.keys()):
                         stocks_to_buy[stock_name] = stocks_to_track[stock_name]
 
-                # if len(stocks_to_buy.keys()) > 0:
-                #     logger.info(f"{list(selected_stocks.keys())}")
-                #     stocks_to_buy:dict[str, Stock] = account.buy_delivery_stocks(stocks_to_buy)
-
             account.update_positions()
-
-            # delete_cum_positions = []
-
-            # for stock_name in account.cum_positions.keys():
-            #     cum_position = account.cum_positions[stock_name]
-            #     if cum_position.breached():
-            #         logger.info(f" line 75 -->sell {position.stock.stock_name}")
-            #         delete_cum_positions.append(cum_position.stock.stock_name)
-            
-            # for stock_name in delete_cum_positions:
-            #     stocks_to_buy = account.delete_position(stock_name,stocks_to_buy, order_id=None,cumulative=True)
 
             delete_positions = {}
             

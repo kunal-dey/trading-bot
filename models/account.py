@@ -8,7 +8,6 @@ from constants.settings import MINIMUM_INVESTMENT
 from models.stock_stages.holding import Holding
 from models.stock_stages.position import Position
 from models.cash_management import CashManager
-from models.stock_stages.cumulative_position import CumulativePosition
 
 from models.stock import Stock
 
@@ -25,7 +24,6 @@ class Account:
 
     holdings:dict[str, Holding] = {}
     positions:dict[str, list[Position]] = {}
-    # cum_positions:dict[str, CumulativePosition] = {}
 
     def __init__(self, cash_manager:CashManager) -> None:
         self.cash_manager = cash_manager
@@ -59,33 +57,6 @@ class Account:
         del self.holdings[holding_name]
         self.cash_manager.total_invested_holding_amount = self.holdings
 
-    def buy_delivery_stocks(self,stocks_to_buy:dict[str, Stock]):
-        """
-            This method is used to buy selected stocks as delivery.
-
-            Here self.loaded is simply used to prevent from re buying the delivery stocks again and again.
-        """
-        global logger
-        stocks_to_del = []
-        logger.info(f"to buy {stocks_to_buy}")
-        for stock_key in stocks_to_buy:
-            stock:Stock = stocks_to_buy[stock_key]
-            current_price = stock.latest_price
-            if stocks_to_buy[stock_key].whether_buy():
-                if long(symbol=stock_key, quantity=maximum_quantity(MINIMUM_INVESTMENT, current_price), product_type=ProductType.INTRADAY):
-                    logger.info(f"{stock_key} was bought at {current_price} as Intraday")
-                    # this condition will prevent key error if the stock is adding for the first time
-                    # if stock_key in self.cum_positions.keys():
-                    #     # if there is already 1 then it will skip. However it would add 1 will updating position.
-                    #     # if there is already 2 it will delete the stock to buy and total stock after updating positions would be 3.
-                    #     if self.cum_positions[stock_key].stock_count() > 1:
-                    #         stocks_to_del.append(stock_key)
-
-        for stock_key in stocks_to_del:
-            del stocks_to_buy[stock_key]
-        self.loaded = True
-        return stocks_to_buy
-
     def update_positions(self):
         new_orders = kite_context.orders()
 
@@ -104,10 +75,8 @@ class Account:
                         )
                     if position.stock.stock_name in self.positions.keys():
                         self.positions[position.stock.stock_name].append(position)
-                        # self.cum_positions[position.stock.stock_name].update_position(position)
                     else:
                         self.positions[position.stock.stock_name] = [position]
-                        # self.cum_positions[position.stock.stock_name] = CumulativePosition(position.stock, position)
 
     def check_order_present(self, order_id:str, trading_symbol:str) -> bool:
         """
@@ -131,17 +100,8 @@ class Account:
     def delete_position(self, stock_name:str, stocks_to_buy, order_id, cumulative=False):
         for position in  self.positions[stock_name]:
             if  not cumulative:
-                # self.positions[stock_name].remove(position)
-                # # self.cum_positions[stock_name].update_position(position, type='REMOVE')
-                # add_blacklisted_order_id(position.order_id)
-                # if self.cum_positions[stock_name].stock_count() == 0:
-                #     del self.cum_positions[stock_name]
-                #     break
-                
-            # else:
                 if position.order_id == order_id:
                     self.positions[stock_name].remove(position)
-                    # self.cum_positions[stock_name].update_position(position, type='REMOVE')
                     add_blacklisted_order_id(position.order_id)
                     break
         stocks_to_buy[stock_name] = Stock(stock_name, "NSE")
