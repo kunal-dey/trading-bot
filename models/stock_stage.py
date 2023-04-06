@@ -91,6 +91,7 @@ class Stage:
 
         while cost*(1 + self.current_expected_return + counter*DELIVERY_INCREMENTAL_RETURN) < selling_price:
             if self.position_type == PositionType.SHORT:
+                
                 self.trigger = selling_price/(1 + self.current_expected_return + (counter-1)*DELIVERY_INCREMENTAL_RETURN)
             else:
                 self.trigger = cost*(1 + self.current_expected_return + (counter-1)*DELIVERY_INCREMENTAL_RETURN)
@@ -99,6 +100,8 @@ class Stage:
         if self.max_trigger:
             if self.max_trigger < self.trigger:
                 self.max_trigger = self.trigger
+            else:
+                self.trigger = self.max_trigger
         else:
             self.max_trigger = self.trigger
             

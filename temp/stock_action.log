@@ -203,7 +203,7 @@
 2023-04-05 10:16:30,363: INFO: models.stock_stage: current return for BERGEPAINT is  0.0024999999999999467
 2023-04-05 10:16:45,573: INFO: models.stock_stage: BERGEPAINT Earlier trigger:  583.0798254025, latest price:583.65
 2023-04-05 10:16:45,573: INFO: models.stock_stage: the total transaction cost for BERGEPAINT is 0.6253986
-2023-04-05 10:16:45,573: INFO: models.stock_stage: current return for BERGEPAINT is  0.0009999999999998899
+2023-04-05 10:16:45,573: INFO: models.stock_stage: current return for BERGEPAINT is  0.00099999999999988099
 2023-04-05 10:17:00,768: INFO: models.stock_stage: BERGEPAINT Earlier trigger:  582.2070239986, latest price:583.65
 2023-04-05 10:17:00,768: INFO: models.stock_stage: the total transaction cost for BERGEPAINT is 0.6253986
 2023-04-05 10:17:00,768: INFO: models.stock_stage: current return for BERGEPAINT is  0.0009999999999998899

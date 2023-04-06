@@ -61,3 +61,9 @@ async def cdsl_access()->Response:
     request_id = authorise()
     return redirect(location=f"{AUTHORISE_REDIRECT_URL}{request_id}")
 
+@login.get("/access_token")
+async def get_token():
+    global access_token
+    return {"access_token":access_token}
+
+
